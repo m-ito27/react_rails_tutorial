@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import EventList from './EventList';
-import { Routes, Route, useNavigate } from 'react-router-dom';
 import Event from './Event';
 import EventForm from './EventForm';
 import { success } from '../helpers/notifications';
@@ -13,7 +13,7 @@ const Editor = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async() => {
+    const fetchData = async () => {
       try {
         const response = await window.fetch('/api/events');
         if (!response.ok) throw Error(response.statusText);
@@ -64,15 +64,15 @@ const Editor = () => {
 
         success('Event Deleted!');
         navigate('/events');
-        setEvents(events.filter(event => event.id !== eventId));
+        setEvents(events.filter((event) => event.id !== eventId));
       } catch (error) {
         handleAjaxError(error);
       }
     }
-  }
+  };
 
   const updateEvent = async (updatedEvent) => {
-    try  {
+    try {
       const response = await window.fetch(
         `/api/events/${updatedEvent.id}`,
         {
@@ -82,7 +82,7 @@ const Editor = () => {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
 
       if (!response.ok) throw Error(response.statusText);
@@ -97,12 +97,12 @@ const Editor = () => {
     } catch (error) {
       handleAjaxError(error);
     }
-  }
+  };
 
   return (
     <>
       <Header />
-      <div className='grid'>
+      <div className="grid">
         {isLoading ? (
           <p>Loading...</p>
         ) : (
@@ -110,7 +110,7 @@ const Editor = () => {
             <EventList events={events} />
 
             <Routes>
-              <Route path='new' element={<EventForm onSave={addEvent} />} />
+              <Route path="new" element={<EventForm onSave={addEvent} />} />
               <Route path=":id" element={<Event events={events} onDelete={deleteEvent} />} />
               <Route path=":id/edit" element={<EventForm events={events} onSave={updateEvent} />} />
             </Routes>

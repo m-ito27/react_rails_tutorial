@@ -1,28 +1,39 @@
-import React, { useState, useRef, useEffect } from "react";
-import { formatDate, isEmptyObject, validateEvent } from "../helpers/helpers"
-import Pikaday from "pikaday";
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import Pikaday from 'pikaday';
 import 'pikaday/css/pikaday.css';
 import PropTypes from 'prop-types';
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import { formatDate, isEmptyObject, validateEvent } from '../helpers/helpers';
 
 const EventForm = ({ events, onSave }) => {
   const { id } = useParams();
+  const initialEventState = useCallback(
+    () => {
+      const defaults = {
+        event_type: '',
+        event_date: '',
+        title: '',
+        speaker: '',
+        host: '',
+        published: false,
+      };
 
-  const defaults = {
-    event_type: '',
-    event_date: '',
-    title: '',
-    speaker: '',
-    host: '',
-    published: false,
-  }
+      const currEvent = id ?
+        events.find((e) => e.id === Number(id)) :
+        {};
 
-  const currEvent = id? events.find((e) => e.id === Number(id)) : {};
-  const initialEventState = { ...defaults, ...currEvent }
+      return { ...defaults, ...currEvent }
+    },
+    [events, id]
+  );
   const [event, setEvent] = useState(initialEventState);
   const [formErrors, setFormErrors] = useState({});
 
   const dateInput = useRef(null);
+
+  const updateEvent = (key, value) => {
+    setEvent((prevEvent) => ({ ...prevEvent, [key]: value }));
+  };
 
   const handleInputChange = (e) => {
     const { target } = e;
@@ -60,18 +71,14 @@ const EventForm = ({ events, onSave }) => {
     }
   };
 
-  const updateEvent = (key, value) => {
-    setEvent((prevEvent) => ({ ...prevEvent, [key]: value}));
-  };
-
   useEffect(() => {
     const p = new Pikaday({
       field: dateInput.current,
-      toString: date => formatDate(date),
+      toString: (date) => formatDate(date),
       onSelect: (date) => {
         const formattedDate = formatDate(date);
         dateInput.current.value = formattedDate;
-        updateEvent('event_date', formattedDate)
+        updateEvent('event_date', formattedDate);
       },
     });
     return () => p.destroy();
@@ -89,19 +96,19 @@ const EventForm = ({ events, onSave }) => {
         <div>
           <label htmlFor="event_type">
             <strong>Type:</strong>
-            <input type='text' id='event_type' name='event_type' onChange={handleInputChange} value={event.event_type} />
+            <input type="text" id="event_type" name="event_type" onChange={handleInputChange} value={event.event_type} />
           </label>
         </div>
         <div>
           <label htmlFor="event_date">
             <strong>Date:</strong>
-            <input type='text' id='event_date' name='event_date' ref={dateInput} autoComplete='off' value={event.event_date} onChange={handleInputChange}/>
+            <input type="text" id="event_date" name="event_date" ref={dateInput} autoComplete="off" value={event.event_date} onChange={handleInputChange} />
           </label>
         </div>
         <div>
-          <label htmlFor='title'>
+          <label htmlFor="title">
             <strong>Title:</strong>
-            <textarea cols='30' rows='10' id='title' name='title' onChange={handleInputChange} value={event.title} />
+            <textarea cols="30" rows="10" id="title" name="title" onChange={handleInputChange} value={event.title} />
           </label>
         </div>
         <div>
@@ -123,7 +130,7 @@ const EventForm = ({ events, onSave }) => {
           </label>
         </div>
         <div className="form-actions">
-          <button type='submit'>Save</button>
+          <button type="submit">Save</button>
         </div>
       </form>
     </div>
@@ -142,7 +149,7 @@ EventForm.propTypes = {
       speaker: PropTypes.string.isRequired,
       host: PropTypes.string.isRequired,
       published: PropTypes.bool.isRequired,
-    })
+    }),
   ),
   onSave: PropTypes.func.isRequired,
 };

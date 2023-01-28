@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link , NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const EventList = ({ events }) => {
   const renderEvents = (eventArray) => {
@@ -18,7 +18,7 @@ const EventList = ({ events }) => {
   };
 
   return (
-    <section className='eventList'>
+    <section className="eventList">
       <h2>
         Events
         <Link to="/events/new">New Event</Link>
