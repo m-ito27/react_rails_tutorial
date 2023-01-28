@@ -4,8 +4,8 @@ import Editor from './Editor';
 
 const App = () => (
   <Routes>
-    <Route path="events/*" element={<Editor />} />;
+    <Route path="events/*" element={<Editor />} />
   </Routes>
-)
+);
 
 export default App;

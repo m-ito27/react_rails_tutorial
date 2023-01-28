@@ -13,7 +13,7 @@ const Event = ({ events }) => {
         {' - '}
         {event.event_type}
       </h2>
-      <ur>
+      <ul>
         <li>
           <strong>Type:</strong> {event.event_type}
         </li>
@@ -30,9 +30,9 @@ const Event = ({ events }) => {
           <strong>Host:</strong> {event.host}
         </li>
         <li>
-          <strong>Pulbished:</strong> {event.published ? 'yes' : 'no'}
+          <strong>Published:</strong> {event.published ? 'yes' : 'no'}
         </li>
-      </ur>
+      </ul>
     </>
   );
 };
