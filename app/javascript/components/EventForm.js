@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, {
+  useState, useRef, useEffect, useCallback,
+} from 'react';
 import Pikaday from 'pikaday';
 import 'pikaday/css/pikaday.css';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { formatDate, isEmptyObject, validateEvent } from '../helpers/helpers';
 
 const EventForm = ({ events, onSave }) => {
@@ -18,13 +20,13 @@ const EventForm = ({ events, onSave }) => {
         published: false,
       };
 
-      const currEvent = id ?
-        events.find((e) => e.id === Number(id)) :
-        {};
+      const currEvent = id
+        ? events.find((e) => e.id === Number(id))
+        : {};
 
-      return { ...defaults, ...currEvent }
+      return { ...defaults, ...currEvent };
     },
-    [events, id]
+    [events, id],
   );
   const [event, setEvent] = useState(initialEventState);
   const [formErrors, setFormErrors] = useState({});
@@ -71,6 +73,9 @@ const EventForm = ({ events, onSave }) => {
     }
   };
 
+  const cancelURL = event.id ? `/events/${event.id}` : 'events';
+  const title = event.id ? `${event.event_date} - ${event.event_type}` : 'New Event';
+
   useEffect(() => {
     const p = new Pikaday({
       field: dateInput.current,
@@ -90,7 +95,7 @@ const EventForm = ({ events, onSave }) => {
 
   return (
     <div>
-      <h2>New Event</h2>
+      <h2>{title}</h2>
       {renderErrors()}
       <form className="eventFrom" onSubmit={handleSubmit}>
         <div>
@@ -131,6 +136,7 @@ const EventForm = ({ events, onSave }) => {
         </div>
         <div className="form-actions">
           <button type="submit">Save</button>
+          <Link to={cancelURL}>Cancel</Link>
         </div>
       </form>
     </div>
