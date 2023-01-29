@@ -97,7 +97,7 @@ const EventForm = ({ events, onSave }) => {
     <div>
       <h2>{title}</h2>
       {renderErrors()}
-      <form className="eventFrom" onSubmit={handleSubmit}>
+      <form className="eventForm" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="event_type">
             <strong>Type:</strong>
