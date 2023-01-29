@@ -6,6 +6,7 @@ import 'pikaday/css/pikaday.css';
 import PropTypes from 'prop-types';
 import { useParams, Link } from 'react-router-dom';
 import { formatDate, isEmptyObject, validateEvent } from '../helpers/helpers';
+import EventNotFound from './EventNotFound';
 
 const EventForm = ({ events, onSave }) => {
   const { id } = useParams();
@@ -92,6 +93,8 @@ const EventForm = ({ events, onSave }) => {
   useEffect(() => {
     setEvent(initialEventState);
   }, [events]);
+
+  if (id && !event.id) return <EventNotFound />;
 
   return (
     <div>
